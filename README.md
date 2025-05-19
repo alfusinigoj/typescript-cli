@@ -64,5 +64,5 @@ This generates `json-transform-linux`, `json-transform-macos`, `json-transform-w
 npm test
 ```
 
-🧪 Spike Outcome
-✅ Confirmed: TypeScript can be authored as a CLI and built into a real executable with no external runtime dependencies using pkg, tested in MacOS.
+## Spike Outcome
+✅ Confirmed that TypeScript can be authored as a CLI and built into a real executable with no external runtime dependencies using pkg, tested in MacOS.
