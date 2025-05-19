@@ -1,0 +1,43 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build Executables
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Compile TypeScript
+      run: npm run build
+
+    - name: Install pkg
+      run: npm install -g pkg
+
+    - name: Build executable
+      run: pkg . --target node18-${{ matrix.os == 'ubuntu-latest' && 'linux-x64' || matrix.os == 'macos-latest' && 'macos-x64' || 'win-x64' }} --output json-transform-${{ matrix.os }}
+
+    - name: Upload release assets
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          json-transform-*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
